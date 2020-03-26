@@ -1,0 +1,10 @@
+.wd-tools-element .wd-tools-icon {
+    position: relative;
+    font-weight: 400;
+    font-size: 0;
+}
+.woodmart-wishlist-info-widget .wishlist-icon:before {
+    font-size: 20px;
+    content: "\f108";
+    font-family: "woodmart-font";
+}
