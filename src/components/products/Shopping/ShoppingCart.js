@@ -1,49 +1,55 @@
-import React, { useEffect,memo } from "react";
+import React from "react";
+import { connect } from "react-redux";
+import * as Actions from "../../store/actions/index";
 import "./Shopping.css";
-const ShoppingCart = memo((props) => {
-  console.log([])
-  useEffect(()=>{
-    console.log("hello")
-  })
+import ShoppingCartContent from "./ShoppingCartContent";
+import EmptyShopCart from "./EmptyShopCart";
+import CheckoutBill from "./CheckoutBill";
+const ShoppingCart = (props) => {
   return (
-    <div className="flex container mt-10">
-      <div className="w-1/4 h-12"></div>
-      <div className="w-3/4 h-12 text-right">
-        <table className="w-full table">
-          <thead>
-            <tr className="table-border p-5">
-              <th>محصول</th>
-              <th>قیمت</th>
-              <th>تعداد</th>
-              <th>جمع جزء</th>
-            </tr>
-          </thead>
-          <tbody className="tbody-padding">
-            <tr>
-              <td>
-                <span>
-                  <a href="#d" className="close-btn">
-                    {" "}
-                  </a>
-                </span>
-
-                <span>سامسونگ</span>
-                <img
-                  className="inline-block h-12 w-12 mr-5"
-                  src="/logo192.png"
-                  alt="pic"
-                />
-              </td>
-
-              <td>2,000,000</td>
-              <td>5</td>
-              <td>2,000,000</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <>
+      {props.product.length === 0 ? (
+        <EmptyShopCart />
+      ) : (
+        <div className="flex container mt-10 mx-auto">
+          <div className="w-3/4 h-12 text-right">
+            <table className="w-full table">
+              <thead>
+                <tr className="table-border p-5">
+                  <th>محصول</th>
+                  <th>قیمت</th>
+                  <th>تعداد</th>
+                  <th>جمع جزء</th>
+                </tr>
+              </thead>
+              <tbody className="tbody-padding">
+                {props.product.map((item) => (
+                  <ShoppingCartContent
+                    shoppingProducts={item}
+                    key={item.id}
+                    remove={() => props.removeFromShoppingCart(item.id)}
+                  />
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="w-1/4 rounded shadow-lg p-5 m-5">
+            <CheckoutBill />
+          </div>
+        </div>
+      )}
+    </>
   );
-})
-
-export default ShoppingCart;
+};
+const mapStateToProps = (state) => {
+  return {
+    product: state.shoppingCartProduct,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    removeFromShoppingCart: (id) =>
+      dispatch(Actions.removeFromShoppingCart(id)),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(ShoppingCart);

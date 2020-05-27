@@ -1,10 +1,13 @@
 import React from "react";
+import { connect } from "react-redux";
+import * as Actions from "../../store/actions/index";
 import Heart from "../../UI/icons/Heart";
 import ShoppingCart from "../../UI/icons/ShoppingCart";
-
 const Product = props => {
-  const { title, price, image } = props.product;
-  const onFavoriteBtn = () => console.log("favorite btn");
+  console.log("im from Product component");
+  const { addToFavoriteCart, addToShoppingCart } = props;
+  const { title, price, image, id } = props.product;
+
   return (
     <>
       <div className="relative w-1/4 hover:bg-gray-100 rounded overflow-hidden shadow-lg m-5">
@@ -18,8 +21,8 @@ const Product = props => {
           <div className="font-bold text-xl mb-2">: {title}</div>
           <p className="text-gray-500 text-base">: {price} مشخصات محصول</p>
           <div className="flex">
-            <Heart btn={onFavoriteBtn} />
-            <ShoppingCart />
+            <Heart clicked={() => addToFavoriteCart(id)} />
+            <ShoppingCart clicked={() => addToShoppingCart(id)} />
           </div>
         </div>
       </div>
@@ -27,4 +30,13 @@ const Product = props => {
   );
 };
 
-export default Product;
+const mapDispatchToProps = dispatch => {
+  return {
+    addToShoppingCart: id => dispatch(Actions.addToShoppingCart(id)),
+    addToFavoriteCart: id => dispatch(Actions.addToFavoriteCart(id))
+  };
+};
+export default connect(
+  null,
+  mapDispatchToProps
+)(Product);

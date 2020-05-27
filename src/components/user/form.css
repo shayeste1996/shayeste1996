@@ -1,0 +1,5 @@
+.valid {
+    border: solid 1px #dbe2e8;
+   }.invalid {
+    border: solid 1px red !important;
+   }
